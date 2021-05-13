@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 // first run -  run at the begining of the programme
 connection.connect((err) => {
 	if (err) throw err
-	main()
+	addRole()
 })
 
 
@@ -35,6 +35,10 @@ const main = () =>{
         switch (answer.section){
             case "Department":
                 whatToDo1();
+                break;
+            
+            case "Roles":
+                whatToDo2();
                 break;
         }
     })
@@ -74,7 +78,7 @@ const whatToDo1 = () => {
 
 				case "view department employees":
 					console.log(" this is the view employees ")
-					runSearch();
+					searchDepartment();
 					break;
 
 				case "Exit":
@@ -140,3 +144,82 @@ const addDepartment = () => {
 			)
 		})
 }
+
+const searchDepartment = () => {
+	connection.query(
+		`SELECT * FROM department`,
+		(err, res) => {
+			if (err) throw err
+
+			const choices = []
+			res.forEach(({ id, name }) => {
+				console.log(`${id} || ${name}`)
+				choices.push(`${name}`)
+			})
+
+			inquirer
+				.prompt([
+					{
+						type: "list",
+						name: "department",
+						message: "which department do you want to view",
+						choices: choices,
+					},
+				])
+				.then((answers) => {
+
+					let q2 = "SELECT department.name, role.title, employee.first_name, employee.last_name, employee.role_id  ";
+					q2 += "from department INNER JOIN role on department.id=role.department_id ";
+					q2 += "INNER JOIN employee on role.id=employee.role_id ";
+					q2 += " WHERE department.name = ? ";
+					connection.query(q2,[answers.department], (err, res) => {
+						if (err) throw err;
+						res.forEach(
+							({ name,first_name, last_name, title }) => {
+								console.log(
+									`name= ${name} | ${first_name} | ${last_name} | ${title}`
+								)
+							}
+						)
+					})
+				})
+		})
+	// ) ;connection.end();
+}
+
+
+// Function for the Roles section 
+const addRole = () => {
+	inquirer
+		.prompt([
+			{
+				type: "input",
+				name: "newRole",
+				message: "Whats the name of the new Role?",
+			},
+            {
+                type: "input",
+                name: "salary",
+                message: "what salary does the new role pay ?"
+            },
+            {
+                type:"input",
+                name:"dep_id",
+                message: "what departmet is this role at ? "
+            }
+		])
+		.then((answers) => {
+			let query = "INSERT INTO role SET ? "
+			connection.query(
+				query,
+				[{ title: answers.newRole ,salary:answers.salary, department_id:answers.dep_id}],
+				(err, res) => {
+					if (err) throw err
+					console.log(
+						`Succesfully created ${answers.newDepartment} department`
+					)
+				}
+			)
+		})
+}
+
