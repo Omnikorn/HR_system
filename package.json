@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Omnikorn/HR_system/issues"
   },
-  "homepage": "https://github.com/Omnikorn/HR_system#readme"
+  "homepage": "https://github.com/Omnikorn/HR_system#readme",
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1"
+  }
 }
