@@ -40,6 +40,10 @@ const main = () =>{
             case "Roles":
                 whatToDo2();
                 break;
+
+            case "Employees":
+                whatToDo3();
+                break;
         }
     })
 }
@@ -186,7 +190,7 @@ const searchDepartment = () => {
 }
 
 
-// Function for the Roles section 
+// Functions for the Roles section 
 
 const whatToDo2 =()=>{
     inquirer.prompt([{
@@ -275,10 +279,95 @@ const deleteRole = () =>{
 		connection.query(query, [{title: answers.which_role}],(err,res)=>{
 			if (err) throw err;
 			console.log(`succefully deleted ${answers.which_role}`)
-            .then (()=> whatToDo2())  
+             
 		})
 	});
-});
+}) .then (()=> whatToDo2()) 
 };
 
+// Functions for the Employee section
 
+const whatToDo3 =()=>{
+    inquirer.prompt([{
+        type:"list",
+        name:"option",
+        message:"What would you like to do",
+        choices:["Add new employee","Remove current employee","Edit current employee's role","Exit"]
+    }])
+    .then((answer)=>{
+        switch (answer.option) {
+            case "Add new employee":
+                addEmployee();
+                break;
+            
+            case "Remove current employee":
+                deleteEmployee();
+                break;
+
+            case "View current roles":
+                viewRole();
+                break;
+            
+            case "Exit":
+                main();
+                break;
+        }
+    })
+}
+
+const addEmployee = ()=>{
+    inquirer.prompt([{
+        type:"input",
+        name:"first_name",
+        message:"Emplyee's first name"
+    },{
+        type:"input",
+        name:"last_name",
+        message:"Employee's last name?"
+    },
+    {
+        type:"input",
+        name:"role_id",
+        message: " What is their role ID ?"
+    },
+    {
+        type:"input",
+        name:"manager_id",
+        message:"what is their manager's ID?"
+    }
+
+])
+    .then((answers)=>{
+        let query = "INSERT INTO employee SET ? "
+			connection.query(
+				query,
+				[{ first_name: answers.first_name, last_name:answers.last_name, role_id:answers.role_id, manager_id:answers.manager_id}],
+				(err, res) => {
+					if (err) throw err
+					console.log(
+						`Succesfully added ${answers.first_name}${answers.last_name}.`
+					)
+				}
+			)
+    })
+.then(()=>{
+    inquirer.prompt([{
+        type:"list",
+        name:"option",
+        message:"Do you want to add another emplyee ?",
+        choices:["Yes","No"]
+
+    }])
+    .then((answer)=>{
+        switch (answer.option){
+            case "Yes":
+                addEmployee();
+                break;
+
+            case "No":
+                whatToDo3();
+                break;
+        }
+    })
+})
+}
