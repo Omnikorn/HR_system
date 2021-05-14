@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
 	user: "root",
-	password: "",
+	password: "@Tobyleron3",
 	database: "company",
 })
 
@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 // first run -  run at the begining of the programme
 connection.connect((err) => {
 	if (err) throw err
-	addRole()
+	main()
 })
 
 
@@ -82,12 +82,10 @@ const whatToDo1 = () => {
 					break;
 
 				case "Exit":
-					console.log("exit gets = " + answer.what1);
+					main();
 					break;
 
-				default:
-					whatToDo1();
-			};
+							};
 		})
 
 };
@@ -189,6 +187,37 @@ const searchDepartment = () => {
 
 
 // Function for the Roles section 
+
+const whatToDo2 =()=>{
+    inquirer.prompt([{
+        type:"list",
+        name:"option",
+        message:"What would you like to do",
+        choices:["Add new role","Delete current role","View current roles","Exit"]
+    }])
+    .then((answer)=>{
+        switch (answer.option) {
+            case "Add new role":
+                addRole();
+                break;
+            
+            case "Delete current role":
+                deleteRole();
+                break;
+
+            case "View current roles":
+                viewRole();
+                break;
+            
+            case "Exit":
+                main();
+                break;
+        }
+    })
+}
+
+
+
 const addRole = () => {
 	inquirer
 		.prompt([
@@ -216,10 +245,40 @@ const addRole = () => {
 				(err, res) => {
 					if (err) throw err
 					console.log(
-						`Succesfully created ${answers.newDepartment} department`
+						`Succesfully created ${answers.newRole}.`
 					)
 				}
 			)
 		})
+        .then (()=>whatToDo2());
 }
+
+const deleteRole = () =>{
+	connection.query(
+		`SELECT * FROM role`,
+		(err, res) => {
+			if (err) throw err;
+
+			const choices = []
+			res.forEach(({ id, title }) => {
+				console.log(`${id} || ${title}`)
+				choices.push(`${title}`)
+			})
+	inquirer.prompt([{
+		type:"list",
+		name: "which_role",
+		message: " which role do you want to remove ?",
+		choices: choices
+	}])
+	.then((answers) => {
+		let query=" DELETE FROM role where ?";
+		connection.query(query, [{title: answers.which_role}],(err,res)=>{
+			if (err) throw err;
+			console.log(`succefully deleted ${answers.which_role}`)
+            .then (()=> whatToDo2())  
+		})
+	});
+});
+};
+
 
