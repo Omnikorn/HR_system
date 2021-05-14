@@ -285,6 +285,16 @@ const deleteRole = () =>{
 }) .then (()=> whatToDo2()) 
 };
 
+const viewRole = () =>{
+    connection.query("SELECT * FROM role",(err,res)=>{
+        if(err) throw err;
+        res.forEach(({id,title})=>
+        console.log(`${id} | ${title}`))
+        whatToDo2()
+        
+    }) 
+}
+
 // Functions for the Employee section
 
 const whatToDo3 =()=>{
