@@ -371,3 +371,51 @@ const addEmployee = ()=>{
     })
 })
 }
+
+
+const deleteEmployee =()=>{
+    connection.query(
+		`SELECT * FROM employee`,
+		(err, res) => {
+			if (err) throw err;
+
+			const choices = []
+			res.forEach(({ id, first_name,last_name }) => {
+				console.log(`${id} | ${first_name} ${last_name}`)
+				// choices.push(`${first_name} ${last_name}`)
+			})
+	inquirer.prompt([{
+		type:"input",
+		name: "who",
+		message: " which employee do you want to remove ?",
+		// choices: choices
+	}])
+	.then((answers) => {
+		let query=" DELETE FROM employee where ?";
+		connection.query(query, [{id: answers.who}],(err,res)=>{
+			if (err) throw err;
+			console.log(`succefully deleted`)
+             
+		})
+	}).then(()=>{
+        inquirer.prompt([{
+            type:"list",
+            name:"option",
+            message:"Do you want to remove another emplyee ?",
+            choices:["Yes","No"]
+    
+        }])
+        .then((answer)=>{
+            switch (answer.option){
+                case "Yes":
+                    deleteEmployee();
+                    break;
+    
+                case "No":
+                    whatToDo3();
+                    break;
+            }
+        })
+    }) 
+}) 
+}
