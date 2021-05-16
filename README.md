@@ -45,6 +45,7 @@ In the roles section they can view current available roles. They can also add or
 Under the employee section the user can view the details of a specific employee including their first name, last name, department id and their managers id. 
 They can also add or remove employees. They can also update current employees’ details including their role id.  
 
+![image](https://user-images.githubusercontent.com/75341811/118398568-212aee80-b651-11eb-89ca-762d8bff776f.png)
   
  
 
