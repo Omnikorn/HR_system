@@ -58,6 +58,7 @@ const whatToDo1 = () => {
 					"Add department",
 					"Delete department",
 					"View department employees",
+					"View department budget",
 					"Exit",
 				],
 			},
@@ -79,6 +80,10 @@ const whatToDo1 = () => {
 				case "View department employees":
 					console.log(" this is the view employees ");
 					searchDepartment();
+					break;
+
+				case "View department budget":
+					departmentBudget();
 					break;
 
 				case "Exit":
@@ -196,7 +201,7 @@ const searchDepartment = () => {
 										`name= ${name} | ${first_name} | ${last_name} | ${title}`
 									)
 								}
-							)
+							) ;whatToDo1();
 						}
 					)
 				})
@@ -205,6 +210,65 @@ const searchDepartment = () => {
 	
 }
 
+const departmentBudget = () => {
+	connection.query(
+		`SELECT * FROM department`,
+		(err, res) => {
+			if (err) throw err
+
+			const choices = []
+			res.forEach(({ id, name }) => {
+				// console.log(`${id} || ${name}`)
+				choices.push(`${name}`)
+			})
+
+			inquirer
+				.prompt([
+					{
+						type: "list",
+						name: "department",
+						message: "which department do you want to view",
+						choices: choices,
+					},
+				])
+				.then((answers) => {
+					let q2 =
+						"SELECT department.name, role.title, employee.first_name, employee.last_name, employee.role_id, role.salary "
+					q2 +=
+						"from department INNER JOIN role on department.id=role.department_id "
+					q2 +=
+						"INNER JOIN employee on role.id=employee.role_id "
+					q2 += " WHERE department.name = ? "
+					connection.query(
+						q2,
+						[answers.department],
+						(err, res) => {
+							if (err) throw err
+							let budget = 0
+							res.forEach(
+								({
+									name,
+									first_name,
+									last_name,
+									title,
+									salary
+								}) => {
+									console.log(
+										`name= ${name} | ${first_name} | ${last_name} | ${title} | ${salary}`
+									)
+									budget += salary
+									// console.log("the departments budget is " + budget)
+								}
+							);console.log("The department's budget is " + budget)
+							;whatToDo1();
+						}
+					) 
+					
+				})
+		}
+	)
+
+}
 // Functions for the Roles section
 
 const whatToDo2 = () => {
