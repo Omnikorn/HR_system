@@ -34,6 +34,9 @@ Upon starting the application, the user is greeted with 3 options:.
 *Departments.
 *Roles.
 *Employees.
+
+![image](https://user-images.githubusercontent.com/75341811/118398513-e1640700-b650-11eb-8978-a062bc456461.png)
+
 In departments the user can view the current department, add or remove a department. 
 They can also view all employee within a specific department. 
 
