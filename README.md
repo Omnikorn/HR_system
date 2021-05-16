@@ -37,8 +37,9 @@ Upon starting the application, the user is greeted with 3 options:.
 
 ![image](https://user-images.githubusercontent.com/75341811/118398513-e1640700-b650-11eb-8978-a062bc456461.png)
 
+
 In departments the user can view the current department, add or remove a department. 
-They can also view all employee within a specific department. 
+They can also view all employee within a specific department.  you can also aquire a departments budget which is the sum of slaraies of all the emploies within the dpeartment. 
 
 In the roles section they can view current available roles. They can also add or remove roles. 
 
@@ -47,6 +48,7 @@ They can also add or remove employees. They can also update current employees’
 
 ![image](https://user-images.githubusercontent.com/75341811/118398568-212aee80-b651-11eb-89ca-762d8bff776f.png)
   
+  please also see video walk through in the repo files 
  
 
 >## Contributions 
