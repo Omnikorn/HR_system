@@ -76,7 +76,7 @@ const whatToDo1 = () => {
 					deleteDepartment();
 					break;
 
-				case "view department employees":
+				case "View department employees":
 					console.log(" this is the view employees ");
 					searchDepartment();
 					break;
@@ -184,6 +184,7 @@ const searchDepartment = () => {
 						[answers.department],
 						(err, res) => {
 							if (err) throw err
+							
 							res.forEach(
 								({
 									name,
@@ -526,41 +527,42 @@ const updateEmpRol = () => {
 			.then((answers) => {
 				connection
 					.query(
-						"UPDATE employee SET ? WHERE ?",
+						"UPDATE employee SET ? WHERE ?",[
 						{
 							role_id: answers.newRole,
 						},
 						{
 							id: answers.who,
-						},
+						}],
 						(err, res) => {
 							if (err) throw err
 							console.log("Role has been updated")
 						}
 					)
-					.then(() => {
-						inquirer
-							.prompt([
-								{
-									type: "list",
-									name: "option",
-									message:
-										"Do you want to update another role ?",
-									choices: ["Yes", "No"],
-								},
-							])
-							.then((answer) => {
-								switch (answer.option) {
-									case "Yes":
-										updateEmpRol()
-										break
-
-									case "No":
-										whatToDo3()
-										break
-								}
-							})
-					})
+					
 			})
+			.then(() => {
+				inquirer
+				.prompt([
+					{
+						type: "list",
+						name: "option",
+						message:
+						"Do you want to update another role ?",
+						choices: ["Yes", "No"],
+					},
+				])
+				.then((answer) => {
+					switch (answer.option) {
+						case "Yes":
+							updateEmpRol()
+							break
+							
+							case "No":
+								whatToDo3()
+								break
+							}
+						})
+					})
 	})
 }
