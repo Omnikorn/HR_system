@@ -67,23 +67,23 @@ const whatToDo1 = () => {
 			console.log("your answer is " + answer.what1)
 			switch (answer.what1) {
 				case "Add department":
-					console.log("add gets =" + answer.what1)
-					addDepartment()
-					break
+					console.log("add gets =" + answer.what1);
+					addDepartment();
+					break;
 
 				case "Delete department":
-					console.log("delet gets= " + answer.what1)
-					deleteDepartment()
-					break
+					console.log("delet gets= " + answer.what1);
+					deleteDepartment();
+					break;
 
 				case "view department employees":
-					console.log(" this is the view employees ")
-					searchDepartment()
-					break
+					console.log(" this is the view employees ");
+					searchDepartment();
+					break;
 
 				case "Exit":
-					main()
-					break
+					main();
+					break;
 			}
 		})
 }
@@ -201,7 +201,7 @@ const searchDepartment = () => {
 				})
 		}
 	)
-	// ) ;connection.end();
+	
 }
 
 // Functions for the Roles section
